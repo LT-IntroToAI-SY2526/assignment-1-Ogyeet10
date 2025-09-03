@@ -27,7 +27,10 @@ def absolute(n: int) -> int:
     Returns:
         the absolute value of the passed in number
     """
-    raise NotImplementedError("absolute")
+    # Return the non-negative value of n without using abs()
+    if n < 0:
+        return -n
+    return n
 
 
 def factorial(n: int) -> int:
@@ -40,7 +43,13 @@ def factorial(n: int) -> int:
     Returns:
         factorial of the passed in number
     """
-    raise NotImplementedError("factorial")
+    if n < 0:
+        raise ValueError("factorial is undefined for negative numbers")
+    result = 1
+    # By convention, 0! == 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
 
 
 T = TypeVar("T")
@@ -57,7 +66,8 @@ def every_other(lst: List[T]) -> List[T]:
     Returns:
         a list of every of other item in the original list starting with the first
     """
-    raise NotImplementedError("every_other")
+    # Take every other element starting at index 0
+    return lst[0::2]
 
 
 def sum_list(lst: List[int]) -> int:
@@ -70,7 +80,10 @@ def sum_list(lst: List[int]) -> int:
     Returns:
         the sum of the passed in list
     """
-    raise NotImplementedError("sum_list")
+    total = 0
+    for value in lst:
+        total += value
+    return total
 
 
 def mean(lst: List[int]) -> float:
@@ -82,7 +95,9 @@ def mean(lst: List[int]) -> float:
     Returns:
         the mean of the passed in list
     """
-    raise NotImplementedError("mean")
+    if len(lst) == 0:
+        raise ValueError("mean of empty list is undefined")
+    return sum_list(lst) / len(lst)
 
 
 def median(lst: List[int]) -> float:
@@ -97,7 +112,15 @@ def median(lst: List[int]) -> float:
     Returns:
         the median of the passed in list
     """
-    raise NotImplementedError("median")
+    if len(lst) == 0:
+        raise ValueError("median of empty list is undefined")
+    n = len(lst)
+    mid = n // 2
+    # List is documented as ordered
+    if n % 2 == 1:
+        return float(lst[mid])
+    # even length: average the two middle values
+    return (lst[mid - 1] + lst[mid]) / 2
 
 
 def duck_duck_goose(lst: List[str]) -> List[str]:
@@ -119,23 +142,39 @@ def duck_duck_goose(lst: List[str]) -> List[str]:
     Returns:
         the resulting list after playing duck duck goose
     """
-    raise NotImplementedError("duck_duck_goose")
+    if len(lst) < 3:
+        raise ValueError("list must have at least 3 names")
+    # Remove every 3rd item, wrapping around, until two remain
+    idx = 0
+    names = list(lst)
+    while len(names) > 2:
+        idx = (idx + 2) % len(names)
+        names.pop(idx)
+        # idx now points at the element after the removed one
+    return names
 
 
 # this line causes the nested code to be skipped if the file is imported instead of run
 if __name__ == "__main__":
     assert absolute(-1) == 1, "absolute of -1 failed"
+    assert absolute(0) == 0, "absolute of 0 failed"
+    assert absolute(7) == 7, "absolute of 7 failed"
     assert factorial(4) == 24, "factorial of 4 failed"
+    assert factorial(0) == 1, "factorial of 0 failed"
     assert every_other([1, 2, 3, 4, 5]) == [
         1,
         3,
         5,
     ], "every_other of [1,2,3,4,5] failed"
+    assert every_other(["a", "b", "c", "d"]) == ["a", "c"], "every_other strings failed"
     assert sum_list([1, 2, 3]) == 6, "sum_list of [1,2,3] failed"
+    assert sum_list([-2, 2, -3, 3]) == 0, "sum_list with negatives failed"
     assert mean([1, 2, 3, 4, 5]) == 3, "mean of [1,2,3,4,5] failed"
     assert median([1, 2, 3, 4, 5]) == 3, "median of [1,2,3,4,5] failed"
+    assert median([1, 2, 3, 4]) == 2.5, "median of even-length list failed"
 
     names = ["roscoe", "kim", "woz", "solin", "law", "remess"]
     assert duck_duck_goose(names) == ["roscoe", "law"]
+    assert duck_duck_goose(["a", "b", "c"]) == ["a", "b"], "duck_duck_goose 3 names failed"
 
     print("All tests passed!")
