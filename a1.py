@@ -1,5 +1,5 @@
 # Assignment 1: AI-Generated Python Problems
-# Name: [Your Name Here]
+# Name: Aidan Leuenberger
 
 """
 AI-Generated Problem Set
