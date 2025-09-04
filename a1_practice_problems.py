@@ -14,7 +14,7 @@ check and we'll be doing them in class.
 Make sure to complete the a1.py problems which should be AI generated.
 """
 
-from typing import List, TypeVar
+from typing import List, TypeVar, Optional
 
 
 def absolute(n: int) -> int:
@@ -42,8 +42,10 @@ def factorial(n: int) -> int:
     Returns:
         factorial of the passed in number
     """
-    raise NotImplementedError("factorial")
-
+    if n == 0:
+        return 1
+    else:
+        return n * factorial(n-1)
 
 T = TypeVar("T")
 
@@ -75,7 +77,7 @@ def sum_list(lst: List[int]) -> int:
     raise NotImplementedError("sum_list")
 
 
-def mean(lst: List[int]) -> float:
+def mean(lst: List[int]) -> Optional[float]:
     """Takes a list of numbers, and returns the mean of the numbers.
 
     Args:
@@ -84,7 +86,11 @@ def mean(lst: List[int]) -> float:
     Returns:
         the mean of the passed in list
     """
-    raise NotImplementedError("mean")
+    if not lst:
+        raise ValueError("Cannot compute mean of an empty list" )
+    else:
+        return sum(lst) / len(lst)
+
 
 
 def median(lst: List[int]) -> float:
@@ -100,6 +106,8 @@ def median(lst: List[int]) -> float:
         the median of the passed in list
     """
     raise NotImplementedError("median")
+
+
 
 
 def duck_duck_goose(lst: List[str]) -> List[str]:
@@ -121,7 +129,16 @@ def duck_duck_goose(lst: List[str]) -> List[str]:
     Returns:
         the resulting list after playing duck duck goose
     """
-    raise NotImplementedError("duck_duck_goose")
+    current_pos = 0
+    while True:
+        if len(lst) < 3:
+            return lst
+        else:
+            if len(lst) - 1 < current_pos + 2: # If overflowing
+                current_pos = current_pos - len(lst)
+            else:
+                lst.pop(current_pos + 2)
+                current_pos = current_pos + 2
 
 
 # this line causes the nested code to be skipped if the file is imported instead of run
