@@ -92,7 +92,7 @@ def mean(lst: List[int]) -> Optional[float]:
         the mean of the passed in list
     """
     if not lst:
-        raise ValueError("Cannot compute mean of an empty list" )
+        return 0
     else:
         return sum(lst) / len(lst)
 
@@ -110,16 +110,19 @@ def median(lst: List[int]) -> float:
     Returns:
         the median of the passed in list
     """
-    if len(lst) % 2 == 0:
-        print("even")
-        listlenght = len(lst)
-        middleIndex = listlenght // 2
-        return (lst[middleIndex] + lst[middleIndex - 1]) / 2
+    if not lst:
+        return 0
     else:
-        print("odd")
-        listlenght = len(lst)
-        middleIndex = listlenght // 2
-        return lst[middleIndex]
+        if len(lst) % 2 == 0:
+            print("even")
+            listlenght = len(lst)
+            middleIndex = listlenght // 2
+            return (lst[middleIndex] + lst[middleIndex - 1]) / 2
+        else:
+            print("odd")
+            listlenght = len(lst)
+            middleIndex = listlenght // 2
+            return lst[middleIndex]
 
 
 def duck_duck_goose(lst: List[str]) -> List[str]:
@@ -170,6 +173,8 @@ if __name__ == "__main__":
     assert mean([1, 2, 3, 4, 5]) == 3, "mean of [1,2,3,4,5] failed"
     assert median([1, 2, 3, 4, 5]) == 3, "median of [1,2,3,4,5] failed"
     assert median([1, 2, 3, 4, 5, 6]) == 3.5, "median of [1,2,3,4,5,6] failed"
+    assert median([]) == 0, "median of [] failed"
+    assert mean([]) == 0, "mean of [] failed"
 
     names = ["roscoe", "kim", "woz", "solin", "law", "remess"]
     assert duck_duck_goose(names) == ["roscoe", "law"]
